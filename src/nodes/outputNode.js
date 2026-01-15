@@ -1,7 +1,9 @@
 // outputNode.js
 
 import { useState } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Position } from 'reactflow';
+import { BaseNode } from '../components/BaseNode';
+import { ArrowRightSquare } from 'lucide-react';
 
 export const OutputNode = ({ id, data }) => {
   const [currName, setCurrName] = useState(data?.outputName || id.replace('customOutput-', 'output_'));
@@ -16,32 +18,36 @@ export const OutputNode = ({ id, data }) => {
   };
 
   return (
-    <div style={{width: 200, height: 80, border: '1px solid black'}}>
-      <Handle
-        type="target"
-        position={Position.Left}
-        id={`${id}-value`}
-      />
-      <div>
-        <span>Output</span>
-      </div>
-      <div>
-        <label>
-          Name:
+    <BaseNode
+      id={id}
+      title="Output"
+      icon={<ArrowRightSquare size={16} />}
+      handles={[
+        { type: 'target', position: Position.Left, id: 'value' }
+      ]}
+    >
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-1">
+          <label className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">Name</label>
           <input 
             type="text" 
             value={currName} 
-            onChange={handleNameChange} 
+            onChange={handleNameChange}
+            className="w-full px-2 py-1 text-sm bg-slate-50 border border-slate-200 rounded outline-none focus:border-purple-400 transition-colors"
           />
-        </label>
-        <label>
-          Type:
-          <select value={outputType} onChange={handleTypeChange}>
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">Type</label>
+          <select 
+            value={outputType} 
+            onChange={handleTypeChange}
+            className="w-full px-2 py-1 text-sm bg-slate-50 border border-slate-200 rounded outline-none focus:border-purple-400 transition-colors cursor-pointer"
+          >
             <option value="Text">Text</option>
             <option value="File">Image</option>
           </select>
-        </label>
+        </div>
       </div>
-    </div>
+    </BaseNode>
   );
 }

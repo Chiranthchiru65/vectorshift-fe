@@ -1,9 +1,17 @@
 // noteNode.js
 
+import { useState } from 'react';
 import { BaseNode } from '../components/BaseNode';
+import { AutoResizeInput } from '../components/AutoResizeInput';
 import { StickyNote } from 'lucide-react';
 
 export const NoteNode = ({ id, data }) => {
+  const [text, setText] = useState(data?.text || '');
+
+  const handleChange = (e) => {
+    setText(e.target.value);
+  }
+
   return (
     <BaseNode
       id={id}
@@ -12,9 +20,12 @@ export const NoteNode = ({ id, data }) => {
       handles={[]} // Notes have no connections
     >
       <div className="flex flex-col gap-1">
-        <textarea 
-          placeholder="Type a note here..."
-          className="w-full px-2 py-1 text-sm bg-yellow-50 border border-yellow-100 rounded outline-none min-h-[80px] resize-none text-slate-700"
+        <AutoResizeInput 
+           value={text}
+           onChange={handleChange}
+           placeholder="Type a note here..."
+           minHeight="140px"
+           className="!bg-yellow-50 !border-yellow-100 focus:!border-yellow-300 text-slate-700"
         />
       </div>
     </BaseNode>

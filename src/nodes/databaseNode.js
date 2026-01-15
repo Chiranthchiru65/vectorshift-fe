@@ -1,10 +1,18 @@
 // databaseNode.js
 
+import { useState } from 'react';
 import { Position } from 'reactflow';
 import { BaseNode } from '../components/BaseNode';
+import { AutoResizeInput } from '../components/AutoResizeInput';
 import { Database } from 'lucide-react';
 
 export const DatabaseNode = ({ id, data }) => {
+  const [query, setQuery] = useState(data?.query || '');
+
+  const handleQueryChange = (e) => {
+    setQuery(e.target.value);
+  };
+
   return (
     <BaseNode
       id={id}
@@ -16,10 +24,13 @@ export const DatabaseNode = ({ id, data }) => {
       ]}
     >
       <div className="flex flex-col gap-2">
-        <label className="text-[10px] text-slate-400 uppercase font-medium">Query</label>
-        <textarea 
+        <AutoResizeInput 
+          label="Query"
+          value={query}
+          onChange={handleQueryChange}
           placeholder="SELECT * FROM users..."
-          className="w-full px-2 py-1 text-xs bg-slate-50 border border-slate-200 rounded outline-none min-h-[50px]"
+          minHeight="60px"
+          className="font-mono text-xs" // Monospace for SQL looks better
         />
       </div>
     </BaseNode>

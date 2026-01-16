@@ -3,6 +3,7 @@
 import { useStore } from "./store";
 import { Play } from "lucide-react";
 import { shallow } from "zustand/shallow";
+import { parsePipeline } from "./services/pipelineService";
 
 const selector = (state) => ({
   nodes: state.nodes,
@@ -13,10 +14,25 @@ export const SubmitButton = () => {
   const { nodes, edges } = useStore(selector, shallow);
 
   const handleSubmit = async () => {
-    console.log("Nodes:", nodes);
-    console.log("Edges:", edges);
+    try {
+      const { num_nodes, num_edges, is_dag } = await parsePipeline(
+        nodes,
+        edges
+      );
 
-    const payload = { nodes, edges };
+      alert(
+        `Pipeline Analysis:\n\n` +
+          `• Total Nodes: ${num_nodes}\n` +
+          `• Total Edges: ${num_edges}\n` +
+          `• Valid DAG: ${
+            is_dag ? "Yes (No Loops Found) " : "No (Cycle Detected) "
+          }`
+      );
+    } catch (error) {
+      alert(
+        "Error: Could not connect to the pipeline analysis server. Is the backend running?"
+      );
+    }
   };
 
   return (

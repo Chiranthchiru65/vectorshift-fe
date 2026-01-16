@@ -3,6 +3,21 @@
 import { Play } from 'lucide-react';
 
 export const SubmitButton = () => {
+    const { nodes, edges } = useStore(selector, shallow);
+
+    const handleSubmit = async () => {
+        // Step 1: Log the payload for verification
+        console.log('--- Pipeline Submission Payload ---');
+        console.log('Nodes:', nodes);
+        console.log('Edges:', edges);
+        
+        // Step 2: Prepare the data to be sent (this will be used in the next step)
+        const payload = { nodes, edges };
+        
+        // Just for now to show we captured it
+        alert(`Captured ${nodes.length} nodes and ${edges.length} edges! Check console for details.`);
+    };
+
     return (
         <button
             type="submit"
